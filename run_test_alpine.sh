@@ -1,8 +1,8 @@
 #!/bin/sh
 FILE_EXTENSION="$(date +"%d-%m-%Y-%T")"
-OUTPUT_FILE_NAME=output/test_output_$FILE_EXTENSION.txt
-TIME_FILE_NAME=output/test_duration_$FILE_EXTENSION.txt
-RESOURCES_FILE_NAME=output/test_internal_resources$FILE_EXTENSION.csv
+OUTPUT_FILE_NAME=test_results/alpine/test_output_$FILE_EXTENSION.txt
+TIME_FILE_NAME=test_results/alpine/test_duration_$FILE_EXTENSION.txt
+RESOURCES_FILE_NAME=test_results/alpine/test_internal_resources$FILE_EXTENSION.csv
 
 monitorResources(){
     PID=$1
@@ -28,7 +28,7 @@ logResources(){
 }
 
 cd /php-src
-mkdir -p output
+mkdir -p test_results/alpine/
 { time make -j $(nproc) 1> $OUTPUT_FILE_NAME ; } 2> $TIME_FILE_NAME &
 monitorResources "$!"
 

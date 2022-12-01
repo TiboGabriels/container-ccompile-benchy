@@ -1,16 +1,21 @@
-FROM alpine:3.17.0
+FROM ubuntu:kinetic-20221101
 
-COPY ./run_test_alpine.sh ./run_test.sh 
+COPY ./run_test_ubuntu.sh ./run_test.sh 
 RUN \
     echo "**** install packages ****" && \
-    apk add -U --upgrade --no-cache \
-        alpine-sdk \
+    apt-get update -y && apt-get upgrade -y && \
+    apt-get install -y \
+        git \
+        time \
+        bc \
+        pkg-config \
+        build-essential \
         autoconf \
         libtool \
         bison \
         re2c \
         libxml2-dev \
-        sqlite-dev \
+        libsqlite3-dev \
         procps \
         bison && \
     echo "**** setup build environmont ****" && \
