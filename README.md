@@ -5,7 +5,7 @@ It does this by providing a slim container image tasked with compiling php-src a
 This tool was developed by me for my Bachelor Thesis Software Engineering @Howest
 
 ## Usage
-first build on of the images, you can do so like this:
+first build one of the images, you can do so like this:
 `docker build --no-cache -t tibogabriels/ccompile-benchy:alpine -f alpine.Dockerfile ./`
 for the other distro's simply replace alpine with ubuntu or debian.
 
