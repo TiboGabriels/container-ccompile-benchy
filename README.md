@@ -6,12 +6,14 @@ This tool was developed by me for my Bachelor Thesis Software Engineering @Howes
 
 ## Usage
 first build one of the images, you can do so like this:
-`docker build --no-cache -t tibogabriels/ccompile-benchy:alpine -f alpine.Dockerfile ./`
-for the other distro's simply replace alpine with ubuntu or debian.
+`docker build --no-cache -t sonicdart/ccompile-benchy:{distro} -f {distro}.Dockerfile ./`
+Replace alpine with ubuntu or debian.
+
+You may also pull the image from the docker regestry with `docker pull sonicdart/ccompile-benchy:{distro}`
 
 ### Docker
-next run the container and execute the test script:
-`docker run -it --rm --mount type=bind,source={output directory},target=/php-src/test_results tibogabriels/ccompile-benchy:alpine ./run_test.sh`
+next run the container and execute the test script from within:
+`docker run -it --rm --mount type=bind,source={output directory},target=/php-src/test_results sonicdart/ccompile-benchy:{distro} ./run_test.sh`
 replace output directory with an absolute path to where you want the result files.
 
 ## Output
@@ -23,6 +25,8 @@ The test script outputs 3 files:
 * test_internal_resources_{datetime}
   outputs a csv file logging memory and cpu usage each second.
 
+## Links
+Dockerhub: https://hub.docker.com/r/sonicdart/ccompile-benchy
 
 ## Disclaimer
 this tool includes PHP software, freely available from http://www.php.net/software/.
