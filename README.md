@@ -16,6 +16,13 @@ next run the container and execute the test script from within:
 `docker run -it --rm --mount type=bind,source={output directory},target=/php-src/test_results sonicdart/ccompile-benchy:{distro} ./run_test.sh`
 replace output directory with an absolute path to where you want the result files.
 
+### LXC
+first create a template with
+`lxc-create {distro} -t oci -- --url docker://sonicdart/ccompile-benchy:{distro}`
+afterwards you can run the container once using
+`lxc-start -F --logfile ./log.txt {distro} ./run_test.sh`
+by default, the entire filesystem (including the test output) is accessable in `/var/lib/lxc/{distro}/rootfs/`
+
 ## Output
 The test script outputs 3 files:
 * test_duration_{datetime}
