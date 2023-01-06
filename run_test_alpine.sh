@@ -3,11 +3,12 @@ FILE_EXTENSION="$(date +"%d-%m-%Y-%T")"
 OUTPUT_FILE_NAME=test_results/alpine/test_output_$FILE_EXTENSION.txt
 TIME_FILE_NAME=test_results/alpine/test_duration_$FILE_EXTENSION.txt
 RESOURCES_FILE_NAME=test_results/alpine/test_internal_resources$FILE_EXTENSION.csv
+START_TIMESTAMP=$(date "+%s")
 
 monitorResources(){
     PID=$1
     echo $(ps | grep $PID)
-    echo "Timestamp;Cpu Usage%;Memory Usage%;" > "$RESOURCES_FILE_NAME"
+    echo "Timestamp; T+;Cpu Usage %;Memory Usage %;" > "$RESOURCES_FILE_NAME"
     TOTAL="$(free -m | grep Mem | tr -s ' ' | cut -d ' ' -f 2)"
     while ps -p $PID 2> /dev/null
     do 
@@ -16,14 +17,16 @@ monitorResources(){
 }
 
 logResources(){
-    DATE=$(date +"%H:%M:%S")
-    echo -n "$DATE;" >> "$RESOURCES_FILE_NAME"
+    DATETIME=$(date +"%s")
+    TIMESTAMP=$(($DATETIME - $START_TIMESTAMP))
+    echo -n "$DATETIME;" >> "$RESOURCES_FILE_NAME"
+    echo -n "$TIMESTAMP;" >> "$RESOURCES_FILE_NAME"
+    CPU_IDL=$(mpstat 1 1 | tr ' ' '\n' | tail -n 1)
+    echo -n "$(echo "scale = 4; (100 - $CPU_IDL) / 100" | bc);" >> "$RESOURCES_FILE_NAME"
     FREE_DATA=`free -m | grep Mem` 
     CURRENT=`echo $FREE_DATA | cut -f3 -d' '`
     TOTAL=`echo $FREE_DATA | cut -f2 -d' '`
-    echo -n "$(echo "scale = 2; $CURRENT/$TOTAL*100" | bc);" >> "$RESOURCES_FILE_NAME"
-    echo "$(top -bn1 | grep load | awk '{printf "%.2f", $(NF-2)}');" >> "$RESOURCES_FILE_NAME"
-
+    echo "$(echo "scale = 4; $CURRENT/$TOTAL" | bc);" >> "$RESOURCES_FILE_NAME"
     sleep 1
 }
 

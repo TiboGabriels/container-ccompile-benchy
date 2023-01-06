@@ -17,6 +17,7 @@ RUN \
         libxml2-dev \
         libsqlite3-dev \
         procps \
+        sysstat \
         bison && \
     echo "**** setup build environmont ****" && \
     git clone https://github.com/php/php-src.git --depth=1 --branch=PHP-8.2.0 && \
